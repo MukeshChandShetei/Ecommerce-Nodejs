@@ -1,0 +1,9 @@
+Place an order
+
+steps to perform for orders
+1. Get cart items of the user, caluclate the total amount
+2. create the record for order
+3. Reduce the stock(products quantity)
+4. clear the cart
+
+productId:98f0 quantity:3 *price:30000 = 90000

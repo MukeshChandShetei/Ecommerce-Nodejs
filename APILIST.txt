@@ -1,0 +1,62 @@
+Products
+1.Get a products -Done
+2.Add a products-Done
+3.Get one product-Done
+4.Filter products-Done
+5.Rate a product-Done
+6.Add items to cart-Done
+7.Get items to cart-Done
+8.Remove items to cart-Done
+
+Create the userController
+1.signup(Email,password,TypeofCustomer(customer,seller))-done
+2.signin(Email,password)-done
+
+//Aggregate function
+
+//this has been done by using the averageprice function
+{
+    _id:cat1,
+    averagePrice:50000,
+}
+
+//find the average rating of an products, if we see we have the ratings in the array named ratings to do the average of
+ratings we use the unwind in aggregate so that it creates the indivual document for each element in the array
+
+step1: create the documents for rating using wind
+db.products.aggregate([
+    //create the documents for rating
+    {
+    $unwind:"$ratings"
+},
+//step2 group them
+{
+    $group:{
+        _id:"$name",
+        averageRating:{$avg:"$ratings.rating"}
+    }
+}
+])
+
+//count of ratings for our product
+
+db.products.aggregate([
+    //step1 : we use project operator to project details like name of product and count of ratings
+    {
+        //size returns the length of nested array
+         $project:{name:1,countOfRating:{
+            $cond:{if:{$isArray:"$ratings"},
+            then:{$size:"$ratings"}
+            ,
+            else:0}}
+    }
+    },
+    {//sort the collection
+    $sort:{countOfRating:-1}},
+    {
+        //limit the collection 
+        $limit:1
+    }
+])
+
+
